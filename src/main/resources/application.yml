@@ -1,0 +1,23 @@
+spring:
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb;DB_CLOSE_DELAY=-1;MODE=MySQL
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      mode: always
+
+jwt:
+  secret: 'mysecretmysecretmysecretmysecret'
+  token:
+    validity: 18000
+  user-default:
+    username: admin
+    password: admin
+
+exchangerate:
+  api: https://v6.exchangerate-api.com/v6/059149c9083b6666b3f22239/latest/
+
