@@ -6,6 +6,7 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import pe.reto.retocurrencyexchange.adapter.configuration.JWTUtil;
+import pe.reto.retocurrencyexchange.application.exception.ExchangeRateException;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -21,7 +22,7 @@ public class AuthService {
                 .map(auth -> jwtUtil.generateToken(username))
                 .onErrorResume(throwable -> {
                     if (throwable instanceof BadCredentialsException) {
-                        return Mono.error(new BadCredentialsException("Invalid credentials"));
+                        return Mono.error(new ExchangeRateException("Credenciales inválidas: Usuario o contraseña no son correctos. Por favor, inténtelo nuevamente."));
                     }
                     return Mono.error(throwable);
                 });

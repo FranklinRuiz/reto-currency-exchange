@@ -9,6 +9,7 @@ import pe.reto.retocurrencyexchange.adapter.dto.request.ExchangeRequestDto;
 import pe.reto.retocurrencyexchange.adapter.dto.response.ExchangeResponse;
 import pe.reto.retocurrencyexchange.adapter.dto.response.ExchangeInfoDto;
 import pe.reto.retocurrencyexchange.adapter.dto.response.ExchangeResponseDto;
+import pe.reto.retocurrencyexchange.application.exception.ExchangeRateException;
 import pe.reto.retocurrencyexchange.domain.model.ExchangeApiResponse;
 import pe.reto.retocurrencyexchange.domain.model.ExchangeRate;
 import pe.reto.retocurrencyexchange.domain.model.ExchangeTransaction;
@@ -39,8 +40,7 @@ public class ExchangeServiceImpl implements ExchangeUseCase {
 
     @Override
     public Mono<ExchangeResponse> performExchange(ExchangeRequest request, String username) {
-        return rateRepository.findBySourceCurrencyAndTargetCurrency(
-                        request.getSourceCurrency(), request.getTargetCurrency())
+        return rateRepository.findBySourceCurrencyAndTargetCurrency(request.getSourceCurrency(), request.getTargetCurrency())
                 .flatMap(dbRate -> buildAndSaveTransaction(request, dbRate.getRate()))
                 .switchIfEmpty(Mono.defer(() -> fetchRateFromApi(request)));
     }
@@ -123,7 +123,7 @@ public class ExchangeServiceImpl implements ExchangeUseCase {
                     BigDecimal rate = apiResponse.getConversionRates().get(request.getTargetCurrency());
 
                     if (rate == null) {
-                        return Mono.error(new RuntimeException("Exchange rate not found for target currency: " + request.getTargetCurrency()));
+                        return Mono.error(new ExchangeRateException("No se pudo localizar la tasa de conversión para la moneda: " + request.getTargetCurrency()));
                     }
 
                     return buildAndSaveTransaction(request, rate);

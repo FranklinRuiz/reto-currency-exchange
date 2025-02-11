@@ -8,6 +8,7 @@ class CurrencyExchangeApplicationTests {
 
     @Test
     void contextLoads() {
+        throw new UnsupportedOperationException("notImplemented()");
     }
 
 }
