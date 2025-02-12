@@ -5,6 +5,7 @@ import pe.reto.retocurrencyexchange.adapter.dto.request.ExchangeRequestDto;
 import pe.reto.retocurrencyexchange.adapter.dto.response.ExchangeResponse;
 import pe.reto.retocurrencyexchange.adapter.dto.response.ExchangeInfoDto;
 import pe.reto.retocurrencyexchange.adapter.dto.response.ExchangeResponseDto;
+import pe.reto.retocurrencyexchange.domain.model.ExchangeTransaction;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,4 +19,6 @@ public interface ExchangeUseCase {
     Flux<ExchangeInfoDto> getRates();
 
     Mono<ExchangeResponseDto> getRate(Long id);
+
+    Flux<ExchangeTransaction> getExchangeTransactions();
 }

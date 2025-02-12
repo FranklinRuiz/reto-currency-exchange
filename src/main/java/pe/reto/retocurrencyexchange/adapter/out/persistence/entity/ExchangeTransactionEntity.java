@@ -1,19 +1,22 @@
 package pe.reto.retocurrencyexchange.adapter.out.persistence.entity;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 import pe.reto.retocurrencyexchange.domain.model.audit.AuditEntity;
 
 import java.math.BigDecimal;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table("EXCHANGE_TRANSACTION")
 public class ExchangeTransactionEntity extends AuditEntity {
+
     @Id
     private Long id;
 

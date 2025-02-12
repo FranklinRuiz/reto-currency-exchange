@@ -41,8 +41,9 @@ public class ExchangeServiceImpl implements ExchangeUseCase {
     @Override
     public Mono<ExchangeResponse> performExchange(ExchangeRequest request, String username) {
         return rateRepository.findBySourceCurrencyAndTargetCurrency(request.getSourceCurrency(), request.getTargetCurrency())
-                .flatMap(dbRate -> buildAndSaveTransaction(request, dbRate.getRate()))
-                .switchIfEmpty(Mono.defer(() -> fetchRateFromApi(request)));
+                .map(ExchangeRate::getRate)
+                .switchIfEmpty(fetchRateFromApi(request))
+                .flatMap(rate -> buildAndSaveTransaction(request, rate));
     }
 
     @Override
@@ -82,6 +83,11 @@ public class ExchangeServiceImpl implements ExchangeUseCase {
                 .build());
     }
 
+    @Override
+    public Flux<ExchangeTransaction> getExchangeTransactions() {
+        return transactionRepository.findAll();
+    }
+
     private Mono<ExchangeResponse> buildAndSaveTransaction(ExchangeRequest request, BigDecimal rate) {
         BigDecimal convertedAmount = request.getAmount().multiply(rate);
 
@@ -112,7 +118,7 @@ public class ExchangeServiceImpl implements ExchangeUseCase {
                 .build();
     }
 
-    private Mono<ExchangeResponse> fetchRateFromApi(ExchangeRequest request) {
+    private Mono<BigDecimal> fetchRateFromApi(ExchangeRequest request) {
         String apiUrl = apiExchangeUrl + request.getSourceCurrency();
 
         return webClient.get()
@@ -126,7 +132,7 @@ public class ExchangeServiceImpl implements ExchangeUseCase {
                         return Mono.error(new ExchangeRateException("No se pudo localizar la tasa de conversión para la moneda: " + request.getTargetCurrency()));
                     }
 
-                    return buildAndSaveTransaction(request, rate);
+                    return Mono.just(rate);
                 });
     }
 }

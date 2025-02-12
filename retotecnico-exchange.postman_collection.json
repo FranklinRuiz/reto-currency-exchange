@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/api/v1/auth/login",
+			"name": "Login",
 			"request": {
 				"auth": {
 					"type": "noauth"
@@ -46,7 +46,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/exchange",
+			"name": "Exchange",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -94,7 +94,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/rates",
+			"name": "Save rates",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -138,7 +138,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/rates/1",
+			"name": "Update Rates",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -183,7 +183,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/rates",
+			"name": "List rates",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -207,6 +207,37 @@
 					"path": [
 						"api",
 						"rates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Exchange",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTczOTMyODMxNywiZXhwIjoxNzM5MzQ2MzE3fQ.45apktNbdw-w544wbQWMG3rfxMgvKJPnzla9EhFfIfc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/exchange/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"exchange",
+						"all"
 					]
 				}
 			},

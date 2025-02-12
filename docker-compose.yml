@@ -1,0 +1,25 @@
+services:
+  currency-exchange:
+    container_name: currency-exchange
+    image: currency-exchange
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - app-network
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - currency-exchange
+    networks:
+      - app-network
+
+networks:
+  app-network:

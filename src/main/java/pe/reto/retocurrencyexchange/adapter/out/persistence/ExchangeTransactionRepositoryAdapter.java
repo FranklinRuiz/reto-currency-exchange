@@ -6,6 +6,7 @@ import pe.reto.retocurrencyexchange.adapter.out.persistence.entity.ExchangeTrans
 import pe.reto.retocurrencyexchange.adapter.out.persistence.repository.ExchangeTransactionRepository;
 import pe.reto.retocurrencyexchange.domain.model.ExchangeTransaction;
 import pe.reto.retocurrencyexchange.domain.port.out.ExchangeTransactionRepositoryPort;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -44,5 +45,10 @@ public class ExchangeTransactionRepositoryAdapter implements ExchangeTransaction
     public Mono<ExchangeTransaction> save(ExchangeTransaction transaction) {
         return repository.save(mapToEntity(transaction))
                 .map(this::mapToDomain);
+    }
+
+    @Override
+    public Flux<ExchangeTransaction> findAll() {
+        return repository.findAll().map(this::mapToDomain);
     }
 }
