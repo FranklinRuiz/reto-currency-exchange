@@ -8,7 +8,10 @@ import reactor.core.publisher.Mono;
 
 public interface ExchangeRateRepositoryPort {
     Mono<ExchangeRate> findBySourceCurrencyAndTargetCurrency(String sourceCurrency, String targetCurrency);
+
     Mono<ExchangeResponseDto> save(ExchangeRate exchangeRate);
+
     Mono<ExchangeRate> findById(Long id);
+
     Flux<ExchangeInfoDto> findAll();
 }
